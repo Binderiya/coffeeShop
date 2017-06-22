@@ -12,6 +12,7 @@
 		<input type="submit" value="Back" />
 	</form>
 	<form action="/createPerson" method="POST" >
+	 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		firstName: <input type="text" name="firstName"> <br /> 
 		lastName: <input type="text" name="lastName"> <br /> 
 		email: <input type="text" name="email" /> <br />	

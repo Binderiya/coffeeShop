@@ -12,6 +12,7 @@
 		<input type="submit" value="Back" />
 	</form>
 	<form action="/createProduct" method="POST" >
+	 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		Description: <input type="text" name="description"> <br /> 
 		Price: <input type="text" name="price"> <br /> 
 		Product name: <input type="text" name="productName" /> <br />	

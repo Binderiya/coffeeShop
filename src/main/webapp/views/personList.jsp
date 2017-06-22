@@ -31,7 +31,6 @@
 				<td>${person.lastName}</td>
 				<td>${person.email}</td>
 				<td>${person.phone}</td>
-				<td>${person.role}</td>
 				<td><form action="/deletePerson/${person.id}" method="GET">
 						<input type="submit" value="Delete" />
 					</form></td>

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -7,10 +7,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>User Page</h1>
-<a href="<c:url value="/logout" />"> Now logout </a>
+	<h1>User Page</h1>
+	<form action="/home" method="GET">
+		<input type="submit" value="Back" />
+	</form>
 	<form action="/makeOrderPage" method="GET">
-		<input type="submit" value="Product list" />
+		<input type="submit" value="Make order" />
 	</form>
 
 </body>

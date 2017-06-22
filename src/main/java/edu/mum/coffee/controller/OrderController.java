@@ -31,64 +31,86 @@ public class OrderController {
 	ProductService productService;
 	@Autowired
 	PersonService personService;
-	@GetMapping({"/addOrder"})
+
+	@GetMapping({ "/addOrder" })
 	public String addOrder(Model model) {
 		List<Person> personList = personService.findAll();
 		model.addAttribute(personList);
 		return "addOrder";
 	}
-	@GetMapping({"/deleteOrder/{id}"})
+
+	@GetMapping({ "/deleteOrder/{id}" })
 	public String deleteOrder(@PathVariable int id, Model model) {
 		orderService.delete(orderService.findById(id));
 		List<Order> orderList = orderService.findAll();
-		model.addAttribute("orderList",orderList);
+		model.addAttribute("orderList", orderList);
 		return "orderList";
 	}
-	
-//	@GetMapping({"/deleteOrderLine/{orderLineId}/{orderId}"})
-//	public String deleteOrderLine(@PathVariable Integer orderLineId,Integer orderId,  Model model) {
-//		System.out.println("deleting orderline");
-//		System.out.println("orderLine"+orderLineId);
-//		System.out.println("order"+orderId);
-//		List<Orderline> orderLines =orderService.findById(orderId).getOrderLines();
-//		for(Orderline orderline: orderLines){
-//			if(orderline.getId()== orderLineId){
-//				Orderline orderLine= orderline;
-//				orderService.findById(orderId).removeOrderLine(orderLine);
-//
-//			}
-//		}
-//		
-//		List<Order> orderList = orderService.findAll();
-//		model.addAttribute("orderList",orderList);
-//		return "orderList";
-//	}
-	
-	@GetMapping({"/addOrderLine/{id}"})
+
+	// @GetMapping({"/deleteOrderLine/{orderLineId}/{orderId}"})
+	// public String deleteOrderLine(@PathVariable Integer orderLineId,Integer
+	// orderId, Model model) {
+	// System.out.println("deleting orderline");
+	// System.out.println("orderLine"+orderLineId);
+	// System.out.println("order"+orderId);
+	// List<Orderline> orderLines
+	// =orderService.findById(orderId).getOrderLines();
+	// for(Orderline orderline: orderLines){
+	// if(orderline.getId()== orderLineId){
+	// Orderline orderLine= orderline;
+	// orderService.findById(orderId).removeOrderLine(orderLine);
+	//
+	// }
+	// }
+	//
+	// List<Order> orderList = orderService.findAll();
+	// model.addAttribute("orderList",orderList);
+	// return "orderList";
+	// }
+
+	@GetMapping({ "/addOrderLine/{id}" })
 	public String addOrderLine(@PathVariable int id, Model model) {
-		  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+		System.out.println("add");
+		System.out.println(username);
 		List<Product> productList = productService.getAllProduct();
-		model.addAttribute("productList",productList);
-		model.addAttribute("order",orderService.findById(id));
+		model.addAttribute("productList", productList);
+		model.addAttribute("order", orderService.findById(id));
 		return "addOrderLine";
 	}
-	@GetMapping({"/createOrderLine/{id}"})
-	public String createOrderLine(@PathVariable int id,@RequestParam("quantity") int quantity, 
-			@RequestParam("product") int productID,Model model) {
+
+	@GetMapping({ "/createOrderLine/{id}" })
+	public String createOrderLine(@PathVariable int id, @RequestParam("quantity") int quantity,
+			@RequestParam("product") int productID, Model model) {
 		System.out.println("creating orderLine");
-		System.out.println("id:"+id);
-		System.out.println("quantity:"+quantity);
-		System.out.println("productId"+productID);
+		System.out.println("id:" + id);
+		System.out.println("quantity:" + quantity);
+		System.out.println("productId" + productID);
 		Orderline orderLine = new Orderline();
 		orderLine.setOrder(orderService.findById(id));
 		orderLine.setProduct(productService.getProduct(productID));
 		orderLine.setQuantity(quantity);
 		orderService.findById(id).addOrderLine(orderLine);
 		List<Order> orderList = orderService.findAll();
-		model.addAttribute("orderList",orderList);
+		model.addAttribute("orderList", orderList);
 		return "orderList";
 	}
-	@RequestMapping(value="/createOrder", method = RequestMethod.POST)
+	@RequestMapping(value = "/orderProductUser/{id}",method = RequestMethod.POST)
+	public String orderProductUser(@PathVariable int id, @RequestParam("quantity") int quantity,
+			@RequestParam("product") int productID, Model model) {
+		Orderline orderLine = new Orderline();
+		orderLine.setOrder(orderService.findById(id));
+		orderLine.setProduct(productService.getProduct(productID));
+		orderLine.setQuantity(quantity);
+		orderService.findById(id).addOrderLine(orderLine);
+		
+		List<Order> orderList = orderService.findAll();
+		model.addAttribute("orderList", orderList);
+		return "userPage";
+	}
+
+	@RequestMapping(value = "/createOrder", method = RequestMethod.POST)
 	public String createOrder(@RequestParam("personId") Long personId, Model model) {
 		System.out.println("creating order");
 		System.out.println(personId);
@@ -97,28 +119,52 @@ public class OrderController {
 		order.setPerson(personService.findById(personId));
 		orderService.save(order);
 		List<Order> orderList = orderService.findAll();
-		model.addAttribute("orderList",orderList);
+		model.addAttribute("orderList", orderList);
 		return "orderList";
 	}
-	@RequestMapping(value="/orderList", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/orderList", method = RequestMethod.GET)
 	public String addProductPage(Model model) {
 		List<Order> orderList = orderService.findAll();
-		model.addAttribute("orderList",orderList);
+		model.addAttribute("orderList", orderList);
 		return "orderList";
 	}
+
 	@RequestMapping(value = "/makeOrderPage", method = RequestMethod.GET)
 	public String makeOrderPage(Model model) {
-
+		Order order = new Order();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+		List<Order> orderList = orderService.findAll();
+		boolean find = false;
+		for(Order o: orderList){
+			if(o.getPerson().getUser().getUsername().equals(username)){
+				model.addAttribute("order", o);
+				find = true;
+			}
+		}
+		if(!find){
+		List<Person> personList = personService.findAll();
+		for(Person person : personList){
+		if(person.getUser().getUsername().equals(username)){
+			order.setOrderDate(new Date());
+			order.setPerson(person);
+			orderService.save(order);
+		}
+		}
+		model.addAttribute("order", order);
+		}
 		List<Product> productList = productService.getAllProduct();
-		model.addAttribute("productList",productList);
+		model.addAttribute("productList", productList);
 		return "orderProduct";
 	}
-	@GetMapping({"/createOrderLineCustomer"})
-	public String createNewOrder(@RequestParam("quantity") int quantity, 
-			@RequestParam("product") int productID,Model model) {
-		
+
+	@GetMapping({ "/createOrderLineCustomer" })
+	public String createNewOrder(@RequestParam("quantity") int quantity, @RequestParam("product") int productID,
+			Model model) {
+
 		List<Order> orderList = orderService.findAll();
-		model.addAttribute("orderList",orderList);
+		model.addAttribute("orderList", orderList);
 		return "orderList";
 	}
 	// @Autowired

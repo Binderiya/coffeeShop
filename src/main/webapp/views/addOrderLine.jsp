@@ -14,6 +14,7 @@
 	</form>
 	<form action="/createOrderLine/${order.id}" method="GET">
 	quantity: <input type="text" name="quantity"> <br /> 
+	
 		<select name="product">
 			<c:forEach items="${productList}" var="product">
 				<option  value="${product.id}">${product.productName}</option>

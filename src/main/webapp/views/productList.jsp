@@ -12,7 +12,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<a href="<c:url value="/secure" />"> Login</a>
+	<form action="/secure" method="GET" >
+		<input type="submit" value="Back" />
+	</form>
 	<form action="/addProduct" method="GET">
 		<input type="submit" value="AddProduct" />
 	</form>
