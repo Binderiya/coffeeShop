@@ -16,15 +16,15 @@
 		firstName: <input type="text" name="firstName" value="${person.firstname}"> <br /> 
 		lastName: <input type="text" name="lastName" value="${person.lastname}"> <br /> 
 		email: <input type="text" name="email" value="${person.email}"/> <br />	
-		city: <input type="text" name="city"value="${person.city}"> <br /> 
-		state: <input type="text" name="state" value="${person.state}"> <br /> 
-		country: <input type="text" name="country" value="${person.country}"> <br /> 
-		zipcode: <input type="text" name="zipcode" value="${person.zipcode}"> <br /> 
+		city: <input type="text" name="city"value="${person.address.city}"> <br /> 
+		state: <input type="text" name="state" value="${person.address.state}"> <br /> 
+		country: <input type="text" name="country" value="${person.address.country}"> <br /> 
+		zipcode: <input type="text" name="zipcode" value="${person.address.zipcode}"> <br /> 
 		phone: <input type="text" name="phone" value="${person.phone}"> <br /> 
 		enable: <input type="text" name="enable" value="${person.enable}"> <br /> 
-		username: <input type="text" name="username" value="${person.username}"> <br /> 
-		password: <input type="text" name="password" value="${person.password}"> <br /> 
-		password: <input type="text" name="passwordConfirm" value="${person.passwordConfirm}"> <br /> 
+		username: <input type="text" name="username" value="${person.user.username}"> <br /> 
+		password: <input type="text" name="password" value="${person.user.password}"> <br /> 
+		password: <input type="text" name="passwordConfirm" value="${person.user.passwordConfirm}"> <br /> 
 		role: <input type="text" name="role" value="${person.role}"> <br /> 
 		<input type="submit" value="Add product" />
 	</form>

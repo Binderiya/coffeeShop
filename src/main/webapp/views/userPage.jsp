@@ -15,7 +15,7 @@
 		<input type="submit" value="Make order" />
 	</form>
 	<form action="/editInfo" method="GET">
-		<input type="submit" value="Make order" />
+		<input type="submit" value="Update info" />
 	</form>
 </body>
 </html>
