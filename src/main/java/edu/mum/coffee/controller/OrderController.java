@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,6 +66,7 @@ public class OrderController {
 	
 	@GetMapping({"/addOrderLine/{id}"})
 	public String addOrderLine(@PathVariable int id, Model model) {
+		  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		List<Product> productList = productService.getAllProduct();
 		model.addAttribute("productList",productList);
 		model.addAttribute("order",orderService.findById(id));
@@ -109,6 +112,14 @@ public class OrderController {
 		List<Product> productList = productService.getAllProduct();
 		model.addAttribute("productList",productList);
 		return "orderProduct";
+	}
+	@GetMapping({"/createOrderLineCustomer"})
+	public String createNewOrder(@RequestParam("quantity") int quantity, 
+			@RequestParam("product") int productID,Model model) {
+		
+		List<Order> orderList = orderService.findAll();
+		model.addAttribute("orderList",orderList);
+		return "orderList";
 	}
 	// @Autowired
 	// PersonService personService;

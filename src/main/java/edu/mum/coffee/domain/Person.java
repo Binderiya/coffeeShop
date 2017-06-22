@@ -32,7 +32,8 @@ public class Person {
 	private Address address;
 	private String phone;
 	private boolean enable;
-	
+	@OneToOne(cascade = CascadeType.ALL)
+	private User user;
 
 	public Person() {
 		super();
@@ -49,6 +50,18 @@ public class Person {
 	}
 
 
+
+	public Person(String firstName, String lastName, String email, Address address, String phone, boolean enable,
+			User user) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.address = address;
+		this.phone = phone;
+		this.enable = enable;
+		this.user = user;
+	}
 
 	public long getId() {
 		return id;
