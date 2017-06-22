@@ -22,6 +22,10 @@
 		zipcode: <input type="text" name="zipcode"> <br /> 
 		phone: <input type="text" name="phone"> <br /> 
 		enable: <input type="text" name="enable"> <br /> 
+		username: <input type="text" name="username"> <br /> 
+		password: <input type="text" name="password"> <br /> 
+		password: <input type="text" name="passwordConfirm"> <br /> 
+		role: <input type="text" name="role"> <br /> 
 		<input type="submit" value="Add product" />
 	</form>
 </body>

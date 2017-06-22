@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import edu.mum.coffee.domain.Address;
 import edu.mum.coffee.domain.Person;
 import edu.mum.coffee.domain.Role;
+import edu.mum.coffee.domain.User;
 import edu.mum.coffee.repository.RoleRepository;
 import edu.mum.coffee.service.PersonService;
+import edu.mum.coffee.service.RoleService;
+import edu.mum.coffee.service.UserService;
 
 @Controller
 public class PersonController {
@@ -27,7 +30,9 @@ public class PersonController {
 	PersonService personService;
 
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleService roleService;
+    @Autowired
+    private UserService userService;
     
 	@RequestMapping(value = "/personList", method = RequestMethod.GET)
 	public String personList(Model model) {
@@ -53,10 +58,29 @@ public class PersonController {
 	public String createPerson(@RequestParam String firstName, @RequestParam String lastName,
 			@RequestParam String email, @RequestParam String city, @RequestParam String state,
 			@RequestParam String country, @RequestParam String zipcode, @RequestParam String phone,
-			@RequestParam boolean enable, Model model) {
+			@RequestParam boolean enable, 
+			@RequestParam String username,
+			@RequestParam String password,
+			@RequestParam String passwordConfirm,
+			@RequestParam String role,Model model) {
 
 		Address address = new Address(city, state, country, zipcode);
 		Person person = new Person(firstName, lastName, email, address, phone, enable);
+		Role r = new Role(role);
+		User u = new User(username);
+
+		
+		person.setAddress(address);
+		u.setPassword(password);
+		u.setPasswordConfirm(passwordConfirm);
+		
+		Set<Role> roles = new HashSet<>();
+		roles.add(r);
+		u.setRoles(roles);
+		roleService.save(r);
+		userService.save(u);
+		
+		person.setUser(u);
 		//person.setPassword(bCryptPasswordEncoder.encode(person.getPassword()));
 		//person.setRoles(new HashSet<>(roleRepository.findAll()));
 		// Role role = new Role();

@@ -13,6 +13,7 @@
 		<input type="submit" value="Back" />
 	</form>
 	<form action="/createOrderLine/${order.id}" method="GET">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	quantity: <input type="text" name="quantity"> <br /> 
 	
 		<select name="product">

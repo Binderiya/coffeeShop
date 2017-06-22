@@ -12,8 +12,9 @@
 </head>
 <body>
 	<h1>You made it!</h1>
-	<a href="<c:url value="/logout" />"> Now logout </a>
-	
+	<form action="/home" method="GET" >
+		<input type="submit" value="Back" />
+	</form>
 	<form action="/productList" method="GET">
 		<input type="submit" value="Product list" />
 	</form>

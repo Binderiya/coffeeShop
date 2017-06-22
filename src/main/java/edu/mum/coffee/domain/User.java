@@ -18,8 +18,15 @@ public class User {
     public Long getId() {
         return id;
     }
+    public User() {
+  	}
 
-    public void setId(Long id) {
+    public User(String username) {
+		super();
+		this.username = username;
+	}
+
+	public void setId(Long id) {
         this.id = id;
     }
 

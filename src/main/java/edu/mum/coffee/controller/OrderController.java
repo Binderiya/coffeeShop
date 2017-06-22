@@ -135,11 +135,15 @@ public class OrderController {
 		Order order = new Order();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
+		System.out.println("hi");
+		System.out.println(username);
+		
 		List<Order> orderList = orderService.findAll();
 		boolean find = false;
 		for(Order o: orderList){
 			if(o.getPerson().getUser().getUsername().equals(username)){
 				model.addAttribute("order", o);
+				System.out.println("orderId"+o.getId());
 				find = true;
 			}
 		}
@@ -147,6 +151,7 @@ public class OrderController {
 		List<Person> personList = personService.findAll();
 		for(Person person : personList){
 		if(person.getUser().getUsername().equals(username)){
+			System.out.println();
 			order.setOrderDate(new Date());
 			order.setPerson(person);
 			orderService.save(order);

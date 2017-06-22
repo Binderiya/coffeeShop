@@ -13,7 +13,7 @@
 		<input type="submit" value="Back" />
 	</form>
 	<form action="/createOrder" method="POST">
-	
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<select name="personId">
 			<c:forEach items="${personList}" var="person">
 				<option  value="${person.id}">${person.firstName}</option>
