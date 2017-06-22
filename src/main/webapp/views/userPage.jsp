@@ -14,6 +14,8 @@
 	<form action="/makeOrderPage" method="GET">
 		<input type="submit" value="Make order" />
 	</form>
-
+	<form action="/editInfo" method="GET">
+		<input type="submit" value="Make order" />
+	</form>
 </body>
 </html>

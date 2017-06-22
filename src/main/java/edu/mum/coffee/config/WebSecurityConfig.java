@@ -10,12 +10,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import edu.mum.coffee.service.UserDetailsServiceImpl;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
+	@Autowired
+	private UserDetailsServiceImpl uService;
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -26,8 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 			.antMatchers("/", "/home", "/index", "/registration").permitAll()
-			.antMatchers("/secure").hasAuthority("ADMIN")
 			.antMatchers("/userPage").hasAuthority("USER")
+			.antMatchers("/secure").hasAuthority("ADMIN")
 			.anyRequest()
 			.authenticated()
 			.and()

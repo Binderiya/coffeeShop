@@ -1,10 +1,13 @@
 package edu.mum.coffee.controller;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,16 +32,29 @@ public class PersonController {
 	@Autowired
 	PersonService personService;
 
-    @Autowired
-    private RoleService roleService;
-    @Autowired
-    private UserService userService;
-    
+	@Autowired
+	private RoleService roleService;
+	@Autowired
+	private UserService userService;
+
 	@RequestMapping(value = "/personList", method = RequestMethod.GET)
 	public String personList(Model model) {
 		List<Person> personList = personService.findAll();
 		model.addAttribute("personList", personList);
 		return "personList";
+	}
+
+	@RequestMapping(value = "/editInfo", method = RequestMethod.GET)
+	public String editInformation(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+		List<Person> personList = personService.findAll();
+		for (Person person : personList) {
+			if (person.getUser().getUsername().equals(username)) {
+				model.addAttribute("person", person);
+			}
+		}
+		return "editInfo";
 	}
 
 	@RequestMapping(value = "/addPerson", method = RequestMethod.GET)
@@ -58,31 +74,27 @@ public class PersonController {
 	public String createPerson(@RequestParam String firstName, @RequestParam String lastName,
 			@RequestParam String email, @RequestParam String city, @RequestParam String state,
 			@RequestParam String country, @RequestParam String zipcode, @RequestParam String phone,
-			@RequestParam boolean enable, 
-			@RequestParam String username,
-			@RequestParam String password,
-			@RequestParam String passwordConfirm,
-			@RequestParam String role,Model model) {
+			@RequestParam boolean enable, @RequestParam String username, @RequestParam String password,
+			@RequestParam String passwordConfirm, @RequestParam String role, Model model) {
 
 		Address address = new Address(city, state, country, zipcode);
 		Person person = new Person(firstName, lastName, email, address, phone, enable);
 		Role r = new Role(role);
 		User u = new User(username);
 
-		
 		person.setAddress(address);
 		u.setPassword(password);
 		u.setPasswordConfirm(passwordConfirm);
-		
+
 		Set<Role> roles = new HashSet<>();
 		roles.add(r);
 		u.setRoles(roles);
 		roleService.save(r);
 		userService.save(u);
-		
+
 		person.setUser(u);
-		//person.setPassword(bCryptPasswordEncoder.encode(person.getPassword()));
-		//person.setRoles(new HashSet<>(roleRepository.findAll()));
+		// person.setPassword(bCryptPasswordEncoder.encode(person.getPassword()));
+		// person.setRoles(new HashSet<>(roleRepository.findAll()));
 		// Role role = new Role();
 		// role.setName("ADMIN");
 		// Set<Person> setRole = new HashSet<>();
@@ -93,6 +105,47 @@ public class PersonController {
 		personService.savePerson(person);
 		List<Person> personList = personService.findAll();
 		model.addAttribute("personList", personList);
+		return "personList";
+	}
+	@RequestMapping(value = "/updateInfo/{id}", method = RequestMethod.POST)
+	public String updatePerson(@PathVariable Long id, @RequestParam String firstName, @RequestParam String lastName,
+			@RequestParam String email, @RequestParam String city, @RequestParam String state,
+			@RequestParam String country, @RequestParam String zipcode, @RequestParam String phone,
+			@RequestParam boolean enable, @RequestParam String username, @RequestParam String password,
+			@RequestParam String passwordConfirm, @RequestParam String role, Model model) {
+
+		Address address = new Address(city, state, country, zipcode);
+		Person person = new Person(firstName, lastName, email, address, phone, enable);
+		Role r = new Role(role);
+		User u = new User(username);
+
+		person.setAddress(address);
+		u.setPassword(password);
+		u.setPasswordConfirm(passwordConfirm);
+
+		Set<Role> roles = new HashSet<>();
+		roles.add(r);
+		u.setRoles(roles);
+		roleService.save(r);
+		userService.save(u);
+
+		person.setUser(u);
+		// person.setPassword(bCryptPasswordEncoder.encode(person.getPassword()));
+		// person.setRoles(new HashSet<>(roleRepository.findAll()));
+		// Role role = new Role();
+		// role.setName("ADMIN");
+		// Set<Person> setRole = new HashSet<>();
+		// setRole.add(person);
+		// role.setUsers(setRole);
+		//
+		//
+//		Person p=personService.findById(id);
+//		p.setAddress(address);
+//		p.setEmail(email);
+//		p.se
+		List<Person> personList = personService.findAll();
+		model.addAttribute("personList", personList);
+		
 		return "personList";
 	}
 	//
