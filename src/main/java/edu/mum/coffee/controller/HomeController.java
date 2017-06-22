@@ -14,36 +14,47 @@ import edu.mum.coffee.service.ProductService;
 
 @Controller
 public class HomeController {
-	
+
 	@Autowired
 	ProductService productService = new ProductService();
-	
-	@GetMapping({"/", "/index", "/home"})
+
+	@GetMapping({ "/", "/index", "/home" })
 	public String homePage(Model model) {
 		List<Product> productList = productService.getAllProduct();
-		model.addAttribute("productList",productList);
+		model.addAttribute("productList", productList);
 		return "home";
 	}
-	
-	@RequestMapping(value="/login", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/loginPage", method = RequestMethod.GET)
 	public String loginPage() {
 		return "login";
 	}
 
-	@GetMapping({"/secure"})
+	@GetMapping({ "/secure" })
 	public String securePage() {
 		return "secure";
 	}
 
-	@GetMapping({"/userPage"})
+	@GetMapping({ "/userPage" })
 	public String userPage() {
 		return "userPage";
 	}
-	
-	@RequestMapping(value="/productList", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(Model model, String error, String logout) {
+		if (error != null)
+			model.addAttribute("error", "Your username and password is invalid.");
+
+		if (logout != null)
+			model.addAttribute("message", "You have been logged out successfully.");
+
+		return "login";
+	}
+
+	@RequestMapping(value = "/productList", method = RequestMethod.GET)
 	public String addProductPage(Model model) {
 		List<Product> productList = productService.getAllProduct();
-		model.addAttribute("productList",productList);
+		model.addAttribute("productList", productList);
 		return "productList";
 	}
 }

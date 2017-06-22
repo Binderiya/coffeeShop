@@ -15,7 +15,6 @@
 		firstName: <input type="text" name="firstName"> <br /> 
 		lastName: <input type="text" name="lastName"> <br /> 
 		email: <input type="text" name="email" /> <br />	
-		role: <input type="text" name="role" /> <br />	
 		city: <input type="text" name="city"> <br /> 
 		state: <input type="text" name="state"> <br /> 
 		country: <input type="text" name="country"> <br /> 

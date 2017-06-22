@@ -2,15 +2,18 @@ package edu.mum.coffee.domain;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
+import java.util.Set;
 
+import javax.persistence.*;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Person {
@@ -18,6 +21,7 @@ public class Person {
 	@GeneratedValue
 	private long id;
 	private String firstName;
+
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -28,47 +32,13 @@ public class Person {
 	private Address address;
 	private String phone;
 	private boolean enable;
-	@Enumerated(EnumType.STRING)
-	private Role role;
-	private String username;
-	private String password;
 	
-	public String getUsername() {
-		return username;
-	}
-
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-
-	public String getPassword() {
-		return password;
-	}
-
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-
-	public Role getRole() {
-		return role;
-	}
-
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
 
 	public Person() {
 		super();
 	}
 
-	
-	public Person(String firstName,  String lastName, String email,Role role, Address address, String phone, boolean enable) {
+	public Person(String firstName, String lastName, String email, Address address, String phone, boolean enable) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -76,9 +46,9 @@ public class Person {
 		this.address = address;
 		this.phone = phone;
 		this.enable = enable;
-		this.role = role;
 	}
-	
+
+
 
 	public long getId() {
 		return id;
@@ -133,6 +103,5 @@ public class Person {
 	}
 
 
-	
 
 }
