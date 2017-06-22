@@ -34,7 +34,7 @@ public class HomeController {
 	public String securePage() {
 		return "secure";
 	}
-	
+
 	@GetMapping({"/userPage"})
 	public String userPage() {
 		return "userPage";

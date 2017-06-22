@@ -14,7 +14,18 @@ public class Address {
 	private String state;
 	private String country;
 	private String zipcode;
-
+	
+	public Address() {
+		super();
+	}
+	
+	public Address(String city, String state, String country, String zipcode) {
+		super();
+		this.city = city;
+		this.state = state;
+		this.country = country;
+		this.zipcode = zipcode;
+	}
 	public String getCity() {
 		return city;
 	}
@@ -46,5 +57,16 @@ public class Address {
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+	
 
 }

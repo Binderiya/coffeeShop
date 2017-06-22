@@ -29,18 +29,7 @@ public class ProductController {
 		model.addAttribute("product",productService.getProduct(id));
 		return "productDetail";
 	}
-//	@RequestMapping(value="/findAllProduct", method = RequestMethod.POST)
-//	public void findAllProduct(Model model){
-//		List<Product> productList = productService.getAllProduct();
-//		model.addAttribute(productList);
-//	}
-//	
-//	@RequestMapping(value="/findProductByType", method = RequestMethod.POST)
-//	public void findProductByType(@RequestBody ProductType productType,Model model){
-//		List<Product> productList = productService.findByProductType(productType);
-//		model.addAttribute(productList);
-//	}
-//	
+
 	@RequestMapping(value="/createProduct", method = RequestMethod.POST,consumes = {"application/x-www-form-urlencoded"})
 	public String createProduct( @RequestParam("description") String description,
 			@RequestParam("price") Double price,
